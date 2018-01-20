@@ -41,11 +41,11 @@ public class Motor {
   }
 
   public double t(double voltage, double w) {
-    return Math.max(((voltage - w/k_v)/k_r*k_t), kStallTorque);
+    return Math.min(((voltage - w/k_v)/k_r*k_t), kStallTorque);
   }
 
   public double w(double voltage, double t) {
-      return Math.max((k_v * (voltage - (t/k_t)*k_r)), kFreeSpeed);
+      return Math.min((k_v * (voltage - (t/k_t)*k_r)), kFreeSpeed);
   }
 
   public static Motor CIM() {
