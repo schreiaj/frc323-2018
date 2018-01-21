@@ -51,15 +51,23 @@ public class Motor {
   }
 
   public double t(double voltage, double w) {
-    return Math.min(((voltage - w/k_v)/k_r*k_t), kStallTorque);
+    double _w = w / 60.0 * 2.0 * Math.PI;
+    // t = I * k_t
+    // V = IR + w/k_v
+    // V - w/k_v = IR
+    // (V - w/k_v)/R = I
+    // t = ((V - w/k_v)/R) * k_t
+    return Math.min(((voltage - _w/k_v)/k_r) * k_t, kStallTorque);
   }
 
   public double w(double voltage, double t) {
-      double _t = t / 60.0 * 2.0 * Math.PI;
       // V = IR + W/k_v
       // (V - IR)*k_v = W
       // t = I * k_t
-      return Math.min((k_v * (voltage - (_t/k_t)*k_r)), kFreeSpeed);
+      // t/k_t = I
+      // k_v * (V - tR/k_t) = W
+      return k_v * (voltage - (t*k_r/k_t));
+      // return Math.min((k_v * (voltage - (_t/k_t)*k_r)), kFreeSpeed);
   }
 
   public static Motor CIM() {
