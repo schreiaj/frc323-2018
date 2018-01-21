@@ -29,8 +29,7 @@ public class Motor {
   private double k_r;
 
   public Motor(double freeSpeed, double freeCurrent, double stallTorque, double stallCurrent, double voltage) {
-    // Austin converts to rads/s but I don't like thinking in those.
-    kFreeSpeed = freeSpeed ;/// 60.0 * 2.0 * Math.PI;
+    kFreeSpeed = freeSpeed / 60.0 * 2.0 * Math.PI;
     kFreeCurrent = freeCurrent;
     kStallCurrent = stallCurrent;
     kStallTorque = stallTorque;

@@ -42,7 +42,8 @@ dependencies {
     compile ctre()
     compile navx()
     compile openrio.powerup.matchData()
-    testCompile "com.google.truth:truth:0.39"
+    compile 'com.google.code.gson:gson:2.8.2'
+    testCompile 'com.google.truth:truth:0.39'
     testCompile 'junit:junit:4.12'
 
 }
