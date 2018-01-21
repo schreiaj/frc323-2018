@@ -34,8 +34,19 @@ public class Motor {
     kStallCurrent = stallCurrent;
     kStallTorque = stallTorque;
     kVoltageSpec = voltage;
+    // V = IR + W/k_v
+    // At stall:
+    //  V = stallCurrent/R
+    //  R = V/stallCurrent
     k_r = kVoltageSpec/kStallCurrent;
+    // At free speed:
+    //  V = freeCurrent * R + freeSpeed/k_v
+    //  V - (freeCurrent * R) = freeSpeed/k_v
+    //  K_v(V - (freeCurrent * R)) = FreeSpeed
+    //  K_v = freeSpeed/ (V - (freeCurrent * R))
     k_v = kFreeSpeed / (kVoltageSpec - kFreeCurrent * k_r);
+    // t = I * k_t
+    // t/I = k_t
     k_t = kStallTorque / kStallCurrent;
   }
 
@@ -44,7 +55,11 @@ public class Motor {
   }
 
   public double w(double voltage, double t) {
-      return Math.min((k_v * (voltage - (t/k_t)*k_r)), kFreeSpeed);
+      double _t = t / 60.0 * 2.0 * Math.PI;
+      // V = IR + W/k_v
+      // (V - IR)*k_v = W
+      // t = I * k_t
+      return Math.min((k_v * (voltage - (_t/k_t)*k_r)), kFreeSpeed);
   }
 
   public static Motor CIM() {

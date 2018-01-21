@@ -5,7 +5,7 @@ public class ElevatorSystem extends System {
   double mass;
   public double pulleyRadius;
   public boolean homingSwitch;
-  public double generatedTorque;
+  public double force;
   public double accel;
 
   public ElevatorSystem() {
@@ -13,12 +13,12 @@ public class ElevatorSystem extends System {
     // TODO find correct loading value
     mass = 5.0; // kg
 
-    pulleyRadius = .05; // m
+    pulleyRadius = .1; // m
     position = 0.0; // m
     // linear velocity of mass
     velocity = 0.0;
     // Set up our reduction (can literally put in gears here)
-    reduction = 12.0/85.0 * 14.0/ 60.0 * 16.0/36.0;
+    reduction = 12.0/85.0 * 14.0/ 60.0;
 
     // We know we're driven by 2x 775s
     motors = new Motor[] {Motor.Vex775Pro(), Motor.Vex775Pro()};
@@ -34,13 +34,17 @@ public class ElevatorSystem extends System {
     position += velocity * dt;
     homingSwitch = (position <= 0.0); // Used a <= here because floating point error
     // double torqueLoad = mass * pulleyRadius;
-    double w_pulley = velocity/pulleyRadius;
+    double w_pulley = velocity/pulleyRadius*reduction;
     double torque = 0.0;
     for (Motor m : motors) {
-      torque += m.t(voltage, w_pulley*reduction);
+      torque += m.t(voltage, w_pulley);
     }
-    generatedTorque = torque/reduction;
-    accel = (generatedTorque / pulleyRadius) / mass;
+    force = (torque * (1.0/reduction))/pulleyRadius;
+    // t = rF
+    // F = r/t
+    // F= mA
+    // A = F/m
+    accel = force / mass;
     velocity += accel * dt;
   }
 

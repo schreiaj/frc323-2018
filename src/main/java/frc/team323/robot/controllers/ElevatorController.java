@@ -3,11 +3,11 @@ package frc.team323.robot.controllers;
 public class ElevatorController {
   private double _position;
   private double _goal;
-  private double _SEEK_DISTANCE = .05; //m
+  private double _SEEK_DISTANCE = .1; //m
   private double _V_MAX = 12;
   private double _P_MAX = 1.2;
-  private double _k_p = 0.1;
-  private double _k_d = 0.0;
+  private double _k_p = 4.0;
+  private double _k_d = 1.0;
   private double _lastError = 0.0;
   private ElevatorState _currentState = ElevatorState.INITIALIZE;
   private enum ElevatorState {
