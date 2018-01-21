@@ -66,9 +66,9 @@ public class Motor {
       // t = I * k_t
       // t/k_t = I
       // k_v * (V - tR/k_t) = W
-      return k_v * (voltage - (t*k_r/k_t));
-      // return Math.min((k_v * (voltage - (_t/k_t)*k_r)), kFreeSpeed);
+      return Math.min(k_v * (voltage - (t*k_r/k_t)), kFreeSpeed);
   }
+
 
   public static Motor CIM() {
     return new Motor(5330, 2.7, 2.41, 131, 12.0);
