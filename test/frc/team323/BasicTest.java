@@ -53,6 +53,7 @@ public class BasicTest {
       double pos = sys.position;
       double voltage = controller.step(pos, goal, sys.homingSwitch);
       sys.step(voltage, dt);
+      assertWithMessage("Voltage shouldn't exceed 12").that(voltage).isLessThan(12);
       log.printf("%f, %f, %f, %f, %f, %f, %d %n", t, voltage, pos, sys.velocity, sys.accel, sys.force ,sys.homingSwitch?1:0);
     }
     log.flush();
