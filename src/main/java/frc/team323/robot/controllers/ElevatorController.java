@@ -6,8 +6,8 @@ public class ElevatorController {
   private double _SEEK_DISTANCE = .1; //m
   private double _V_MAX = 12;
   private double _P_MAX = 1.2;
-  private double _k_p = 4.0;
-  private double _k_d = 1.0;
+  private double _k_p = 1.0;
+  private double _k_d = 0.0;
   private double _lastError = 0.0;
   private ElevatorState _currentState = ElevatorState.INITIALIZE;
   private enum ElevatorState {

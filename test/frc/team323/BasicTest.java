@@ -23,13 +23,16 @@ public class BasicTest {
     assertWithMessage("Incorrect stall torque").that(myMotor.t(12, 0)).isWithin(1.0e-10).of(2.41);
     // This test just checks "are you close to 0"
     // Close enough YOLO?
-    assertWithMessage("Incorrect stall torque").that(myMotor.t(12, 5330)).isWithin(1.0e-2).of(0.05);
+    assertWithMessage("Incorrect stall torque").that(myMotor.t(12, 5330/ 60.0 * 2.0 * Math.PI)).isWithin(1.0e-2).of(0.05);
     assertWithMessage("Incorrect free speed").that(myMotor.w(12, 0)).isWithin(1.0e-10).of(5330 / 60.0 * 2.0 * Math.PI);
     PrintWriter log = new PrintWriter("cim.csv");
-    log.println("v, t");
-    for (int speed = 0; speed <= 5330 ; speed += 10 ) {
+    log.println("speed, torque, load, w");
+    for (double p = 0; p <= 1.0 ; p += .01 ) {
+        double speed = p * 5330.0;
+        double load = p * 2.41;
         double t = myMotor.t(12, speed);
-        log.printf("%d, %f %n", speed, t);
+        double w = myMotor.w(12, load);
+        log.printf("%f, %f, %f, %f %n", speed, t, load, w);
     }
     log.flush();
     log.close();
@@ -53,7 +56,8 @@ public class BasicTest {
       double pos = sys.position;
       double voltage = controller.step(pos, goal, sys.homingSwitch);
       sys.step(voltage, dt);
-      assertWithMessage("Voltage shouldn't exceed 12").that(voltage).isLessThan(12);
+      assertWithMessage("Voltage shouldn't exceed 12").that(voltage).isAtMost(12.0);
+      assertWithMessage("Voltage shouldn't exceed 12").that(voltage).isAtLeast(-12.0);
       log.printf("%f, %f, %f, %f, %f, %f, %d %n", t, voltage, pos, sys.velocity, sys.accel, sys.force ,sys.homingSwitch?1:0);
     }
     log.flush();

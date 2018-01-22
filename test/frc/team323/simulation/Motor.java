@@ -51,7 +51,7 @@ public class Motor {
   }
 
   public double t(double voltage, double w) {
-    double _w = w / 60.0 * 2.0 * Math.PI;
+    double _w = w;
     // t = I * k_t
     // V = IR + w/k_v
     // V - w/k_v = IR
