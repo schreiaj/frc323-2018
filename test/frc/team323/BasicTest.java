@@ -30,7 +30,7 @@ public class BasicTest {
     for (double p = 0; p <= 1.0 ; p += .01 ) {
         double speed = p * 5330.0;
         double load = p * 2.41;
-        double t = myMotor.t(12, speed);
+        double t = myMotor.t(12, speed / 60.0 * 2.0 * Math.PI);
         double w = myMotor.w(12, load);
         log.printf("%f, %f, %f, %f %n", speed, t, load, w);
     }
@@ -44,17 +44,18 @@ public class BasicTest {
     assertWithMessage("Elevator properly initialized").that(sys.velocity).isWithin(1.0e-10).of(0.0);
     sys.init();
     ElevatorController controller = new ElevatorController();
-    double goal = 1.0;
+    double goal = 2.0;
     double maxTime = 5.0;
     double dt = 1.0/100.0;
     PrintWriter log = new PrintWriter("elevator.csv");
     log.println("t, voltage, pos, vel, accel, force, homing");
     for(double t = 0.0; t <= maxTime; t+=dt) {
       if(t > 2.5) {
-        // goal = .2;
+        goal = .1;
       }
       double pos = sys.position;
       double voltage = controller.step(pos, goal, sys.homingSwitch);
+      // voltage = 12;
       sys.step(voltage, dt);
       assertWithMessage("Voltage shouldn't exceed 12").that(voltage).isAtMost(12.0);
       assertWithMessage("Voltage shouldn't exceed 12").that(voltage).isAtLeast(-12.0);

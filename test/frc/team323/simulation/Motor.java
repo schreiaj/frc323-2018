@@ -60,6 +60,11 @@ public class Motor {
     return Math.min(((voltage - _w/k_v)/k_r) * k_t, kStallTorque);
   }
 
+  // The math on this one needs some work
+  // public double a(double voltage, double w) {
+  //   return Math.min(((voltage - w/k_v)/k_r), kStallCurrent);
+  // }
+
   public double w(double voltage, double t) {
       // V = IR + W/k_v
       // (V - IR)*k_v = W

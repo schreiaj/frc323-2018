@@ -11,7 +11,7 @@ public class ElevatorSystem extends System {
   public ElevatorSystem() {
 
     // TODO find correct loading value
-    mass = 5.0; // kg
+    mass = 10.0; // kg
 
     pulleyRadius = .0254; // m
     position = 0.0; // m
@@ -21,7 +21,7 @@ public class ElevatorSystem extends System {
     reduction = 12.0/85.0 * 14.0/ 60.0 * 22.0 / 44.0;
 
     // We know we're driven by 2x 775s
-    motors = new Motor[] {Motor.Vex775Pro()};
+    motors = new Motor[] {Motor.Vex775Pro(), Motor.Vex775Pro(), Motor.Vex775Pro(), Motor.Vex775Pro(), Motor.Vex775Pro(), Motor.Vex775Pro()};
   }
 
   public void init() {
@@ -37,7 +37,7 @@ public class ElevatorSystem extends System {
     double w_pulley = velocity/pulleyRadius;
     double torque = 0.0;
     for (Motor m : motors) {
-      torque += m.t(voltage, w_pulley/reduction);
+      torque += m.t(voltage, w_pulley/reduction/60.0 * 2 * Math.PI);
     }
     force = (torque * (1.0/reduction))/pulleyRadius;
     // t = rF
@@ -45,6 +45,7 @@ public class ElevatorSystem extends System {
     // F= mA
     // A = F/m
     accel = force / mass;
+    accel += -9.8 * mass;
     velocity += accel * dt;
     /*
       velocity = 1m/s
