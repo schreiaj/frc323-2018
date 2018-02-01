@@ -20,6 +20,7 @@ public class ElevatorController {
     _position = position;
     _goal = goal;
     _sumError = _goal == _lastGoal ? _sumError : 0.0;
+
     _lastGoal = _goal;
     switch (_currentState) {
       case INITIALIZE:
